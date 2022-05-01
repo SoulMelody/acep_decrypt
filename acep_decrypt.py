@@ -1,6 +1,5 @@
 import argparse
 import base64
-import binascii
 import hashlib
 import json
 import zstandard
@@ -13,8 +12,8 @@ def decrypt_ace_studio_project(src, target):
         enc_content = base64.b64decode(project_data['content'])
         key_bytes = b'11956722077380335572'
         iv_bytes = b'1103392056537578664'
-        key = binascii.a2b_hex(hashlib.sha256(key_bytes).hexdigest())
-        iv = binascii.a2b_hex(hashlib.md5(iv_bytes).hexdigest())
+        key = hashlib.sha256(key_bytes).digest()
+        iv = hashlib.md5(iv_bytes).digest()
         cipher = AES.new(key, AES.MODE_CBC, iv)
         raw_content = cipher.decrypt(enc_content)
         dctx = zstandard.ZstdDecompressor()
